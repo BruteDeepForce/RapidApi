@@ -12,7 +12,7 @@ namespace RapidApi.Model
              _context = context;
         }
         public string Key()
-        {
+        { 
             char[] characters = new char[10];
 
             Random rnd = new Random();

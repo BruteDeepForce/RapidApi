@@ -1,12 +1,13 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using DIContainer;
 
 namespace RapidApi.Model
 {
     public class GenerateKey
     {
         private readonly Context _context;
-
+        
         public GenerateKey(Context context)
         {
              _context = context;
@@ -50,6 +51,35 @@ namespace RapidApi.Model
 
             return new string(encode);
 
+        }
+    }
+
+    public class bar
+    {
+        public void readSth() { }
+    }  //DI test
+    public class baz
+    {
+        private readonly bar _bar;
+        public baz(bar bar)
+        {
+            _bar = bar;
+        }
+        public void WriteSomething()
+        {
+            _bar.readSth();
+        }
+    }
+    public class foo
+    {     
+        private readonly baz _baz;
+        public foo(baz baz)
+        {
+           _baz = baz;
+        }
+        public void Maniplutae() 
+        {
+            _baz.WriteSomething();
         }
     }
 }

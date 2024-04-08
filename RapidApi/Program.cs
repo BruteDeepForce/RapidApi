@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RapidApi.Authentication;
+using RapidApi.Middlewares;
 using RapidApi.Model;
 using System;
 
@@ -37,7 +38,27 @@ namespace RapidApi
                 app.UseSwaggerUI();
             }
 
+            app.UseApiMiddleware();
+
+            //app.Use(async (context, next) =>
+            //{
+
+            //    await Console.Out.WriteLineAsync("1 baþladý");
+            //    await next();
+            //    await Console.Out.WriteLineAsync("1 bitiyor");
+            //});
+
+            //app.Use(async (context, next) =>
+            //{
+
+            //    await Console.Out.WriteLineAsync("2 baþladý");
+            //    await next();
+            //    await Console.Out.WriteLineAsync("2 bitiyor");
+            //});
+
             app.UseHttpsRedirection();
+
+            //app.UseMiddleware<UseApiMiddleWare>();
 
             //app.UseMiddleware<AuthenticationMiddleware>();
 

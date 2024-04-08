@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 
 namespace RapidApi.Model
 {
@@ -7,4 +8,5 @@ namespace RapidApi.Model
         [Key]
         public string ApiKey { get; set; }
     }
+
 }

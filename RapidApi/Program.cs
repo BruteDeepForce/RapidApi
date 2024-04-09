@@ -25,9 +25,22 @@ namespace RapidApi
 
             builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
             builder.Services.AddTransient<GenerateKey>(); /*Addtransient sisteme servis ekliyoruz ve generatekey sýnýfýný DI için enjekte etmiþ oluyoruz. ve artýk sistem bunu kendisi örnekleyip kullanýma sunuyor.*/
-
+            builder.Services.AddTransient<Actions>();
+            
             builder.Services.AddDbContext<Context>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("RapidDatabase")));
+
+            //Environment.SetEnvironmentVariable("Amend", "Amendment"); //burada ortam deðiþkeni set ediliyor.
+            //IConfigurationRoot configuration = new ConfigurationBuilder()  // Config kurma kýsmý burasý.
+            //.SetBasePath(Directory.GetCurrentDirectory())   //Config nesnesi örneðini almak için kuruyoruz.
+            //.AddJsonFile("appsettings.json")
+            //.AddEnvironmentVariables()
+            //.Build();
+
+            //var env = configuration["TEMP"];
+            //var queryinstance = new query(configuration);
+
+            //queryinstance.things();
 
             var app = builder.Build();
 

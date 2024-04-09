@@ -11,6 +11,7 @@ using RapidApi.Model;
 using System.Reflection.Metadata.Ecma335;
 using RapidApi.Authentication;
 using System.Net;
+using System.Collections.Immutable;
 
 namespace RapidApi.Controllers
 {
@@ -19,16 +20,21 @@ namespace RapidApi.Controllers
     [ApiController]
     public class RapidController : ControllerBase
     {
+        #region DI
         public readonly Context _context;
         private readonly IApiKeyValidation _apiKeyValidation;
         private readonly GenerateKey generaTe;
-
-        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen)
+        private readonly Actions _actions;
+        #endregion
+        #region Ctor
+        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen, Actions actions)
         {
              _context = context;
              _apiKeyValidation = apiKeyValidation;
              generaTe = gen;
+            _actions = actions;
         }
+        #endregion
         [HttpGet("test")]
         public async Task<string> Getter(int season, int data)
         {
@@ -109,11 +115,24 @@ namespace RapidApi.Controllers
         [HttpGet("GetSingleUrl")]
         public string SingleUrl(string title)
         {
+            var single = _actions.GetSinglePicture(title);
+            if (single == null) { return "No Item"; }
 
-            var control = _context.Pictures.Where(x=>x.title == title).FirstOrDefault();
+            return single.url.ToString();
 
-            return control != null ? control.url.ToString() : "No Item";
+            #region
+            //var control = _context.Pictures.Where(x=>x.title == title).FirstOrDefault();
 
+            //return control != null ? control.url.ToString() : "No Item";
+            #endregion  //iptal edilen taraf.
+        }
+        [HttpDelete("DeletePicture")]
+        public IActionResult Delete(int id) 
+        {
+            var control = _actions.DeletePic(id);
+
+            if (control == 0) { return BadRequest(); }
+            else { return Ok(); }   
         }
     }
 

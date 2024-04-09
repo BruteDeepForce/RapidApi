@@ -82,4 +82,12 @@ namespace RapidApi.Model
             _baz.WriteSomething();
         }
     }
+
+    public static class bas  //Extension Kullanım
+    {
+
+        public static int GetInt(this int i)
+
+        { return i; }
+    }
 }

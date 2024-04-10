@@ -43,7 +43,7 @@ namespace RapidApi.Model
             var generated = new string(characters);
             var encode = Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes(characters)));
 
-            var api = new ApiKeys { ApiKey = encode };  //önemli burası
+            var api = new ApiKeys { ApiKey = encode };  
 
             _context.apiKeys.Add(api);
             _context.SaveChanges();
@@ -52,42 +52,5 @@ namespace RapidApi.Model
             return new string(encode);
 
         }
-    }
-
-    public class bar
-    {
-        public void readSth() { }
-    }  //DI test
-    public class baz
-    {
-        private readonly bar _bar;
-        public baz(bar bar)
-        {
-            _bar = bar;
-        }
-        public void WriteSomething()
-        {
-            _bar.readSth();
-        }
-    }
-    public class foo
-    {     
-        private readonly baz _baz;
-        public foo(baz baz)
-        {
-           _baz = baz;
-        }
-        public void Maniplutae() 
-        {
-            _baz.WriteSomething();
-        }
-    }
-
-    public static class bas  //Extension Kullanım
-    {
-
-        public static int GetInt(this int i)
-
-        { return i; }
     }
 }

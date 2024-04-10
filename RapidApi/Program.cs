@@ -41,7 +41,20 @@ namespace RapidApi
             }
 
             app.UseApiMiddleware();
+            app.Use(async (context, next) =>
+            {
+                if(context.Request.Path == "/api/rapid/GetSingleUrl")
+                {
+                    var startTime = DateTime.UtcNow;
 
+                    await next(); 
+
+                    var endTime = DateTime.UtcNow;
+                    var duration = endTime - startTime;
+                    Console.WriteLine($"'/Getsinglepicture' endpoint için geçen süre: {duration.TotalMilliseconds} ms");
+            }
+
+        });
             app.UseHttpsRedirection();
 
 

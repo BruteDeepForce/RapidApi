@@ -46,7 +46,7 @@ namespace RapidApi.Controllers
                 RequestUri = new Uri($"https://api-nba-v1.p.rapidapi.com/teams/statistics?season={season}&id={data}"),
                 Headers =
              {
-             { "X-RapidAPI-Key", "5f521cab84msh86eac253ec67344p179278jsn2b054f31d675" },
+             { "X-RapidAPI-Key", "" },
               { "X-RapidAPI-Host", "api-nba-v1.p.rapidapi.com" },
              },
             };

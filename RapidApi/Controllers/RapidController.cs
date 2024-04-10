@@ -134,6 +134,20 @@ namespace RapidApi.Controllers
             if (control == 0) { return BadRequest(); }
             else { return Ok(); }   
         }
+        [HttpPost("AddItem")]
+        public IActionResult addItem(Picture model)
+        {
+            var aResp = _actions.add(model);
+            if (aResp == 1) { return Ok(); }
+            return BadRequest();
+        }
+        [HttpPut("UpdateItem")]
+        public IActionResult updateItem(Picture model) 
+        {
+            var aResp = _actions.Put(model);
+            if(aResp == 1) { return Ok(); };
+            return BadRequest();
+        }
     }
 
     public class TeamStatisticsResponse

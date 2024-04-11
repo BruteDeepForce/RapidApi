@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using DIContainer;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace RapidApi.Model
 {
@@ -45,7 +46,7 @@ namespace RapidApi.Model
 
             foreach(var key in _context.apiKeys) //Databasede bu api key var mı _??
             {
-                if(key.ApiKey == encode) { return null; }
+                if(key.ApiKey == encode) { Key(); }
 
             }
             var api = new ApiKeys { ApiKey = encode };  

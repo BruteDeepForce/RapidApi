@@ -1,4 +1,6 @@
-﻿namespace RapidApi.Middlewares
+﻿using System.Collections;
+
+namespace RapidApi.Middlewares
 {
     public class UseApiMiddleWare
     {
@@ -12,7 +14,7 @@
             var pathClick = context.Request.Path;
             var startTime = DateTime.UtcNow;
 
-            var req = context.Request;
+            var req = context.Request;       
 
             //Console.WriteLine(startTime.ToString());
 
@@ -26,7 +28,6 @@
         }
 
     }
-
     public static class ApiMiddlewareExtension
     {
         public static IApplicationBuilder UseApiMiddleware(this IApplicationBuilder builder) 

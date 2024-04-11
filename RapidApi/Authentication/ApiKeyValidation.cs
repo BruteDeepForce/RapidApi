@@ -1,4 +1,5 @@
 ﻿using RapidApi.Model;
+using System.Runtime.CompilerServices;
 
 namespace RapidApi.Authentication
 {

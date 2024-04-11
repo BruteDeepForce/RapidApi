@@ -55,10 +55,17 @@ namespace RapidApi
 
             //app.Use(async (context, next) =>
             //{
+            //    if(context.Request.Path == "/api/rapid/GetSingleUrl")
+            //    {
+            //        var startTime = DateTime.UtcNow;
 
-            //    await Console.Out.WriteLineAsync("1 baþladý");
-            //    await next();
-            //    await Console.Out.WriteLineAsync("1 bitiyor");
+            //        await next(); 
+
+            //        var endTime = DateTime.UtcNow;
+            //        var duration = endTime - startTime;
+            //        Console.WriteLine($"'/Getsinglepicture' endpoint için geçen süre: {duration.TotalMilliseconds} ms");
+            //    }
+
             //});
 
             //app.Use(async (context, next) =>

@@ -16,7 +16,7 @@ namespace RapidApi.Model
             string smtpPassword = "";
 
             // gönderen ve alıcı adres
-            string senderAddress = "s.tuysuzoglu@outlook.com";
+            string senderAddress = "";
             string recipientAddress = mailAdress;
 
             // Mail mesajı oluşturma
@@ -24,7 +24,7 @@ namespace RapidApi.Model
             mail.Subject = "Api Key Generated";
             mail.Body = $"Your Api Key Has Generated. Here: {Key}";
 
-            // SMTP istemcisini oluşturma
+            // SMTP istemcisini oluşturma 
             SmtpClient client = new SmtpClient(smtpServer, smtpPort);
             client.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
             client.EnableSsl = true; // SSL/TLS kullanıyorsa true olarak ayarla

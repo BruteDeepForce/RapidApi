@@ -12,8 +12,8 @@ namespace RapidApi.Model
             // SMTP sunucu bilgileri
             string smtpServer = "outlook.office365.com";
             int smtpPort = 587; // Genellikle 587 veya 465 kullanılır
-            string smtpUsername = "s.tuysuzoglu@outlook.com";
-            string smtpPassword = "SlSl123456";
+            string smtpUsername = "";
+            string smtpPassword = "";
 
             // Mail gönderen ve alıcı adresi
             string senderAddress = "s.tuysuzoglu@outlook.com";

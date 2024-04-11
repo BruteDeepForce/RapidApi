@@ -9,6 +9,7 @@
         }
         public async Task Invoke(HttpContext context)
         {
+            var pathClick = context.Request.Path;
             var startTime = DateTime.UtcNow.Millisecond;
 
             var req = context.Request;
@@ -21,7 +22,7 @@
 
             var sum = endTime-startTime;
 
-            Console.WriteLine($"Request - Response arası Süre : {sum.ToString()} MiliSecond");
+            Console.WriteLine($"{pathClick} Endpointinde Request - Response arası Süre : {sum.ToString()} MiliSecond");
         }
 
     }

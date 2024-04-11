@@ -43,6 +43,11 @@ namespace RapidApi.Model
             var generated = new string(characters);
             var encode = Convert.ToHexString(SHA1.HashData(Encoding.UTF8.GetBytes(characters)));
 
+            foreach(var key in _context.apiKeys) //Databasede bu api key var mı _??
+            {
+                if(key.ApiKey == encode) { return null; }
+
+            }
             var api = new ApiKeys { ApiKey = encode };  
 
             _context.apiKeys.Add(api);

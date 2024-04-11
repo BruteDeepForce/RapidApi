@@ -25,14 +25,16 @@ namespace RapidApi.Controllers
         private readonly IApiKeyValidation _apiKeyValidation;
         private readonly GenerateKey generaTe;
         private readonly Actions _actions;
+        private readonly MailActions _mailActions;
         #endregion
         #region Ctor
-        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen, Actions actions)
+        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen, Actions actions, MailActions mailActions)
         {
              _context = context;
              _apiKeyValidation = apiKeyValidation;
              generaTe = gen;
             _actions = actions;
+            _mailActions = mailActions;
         }
         #endregion
         [HttpGet("test")]
@@ -69,10 +71,10 @@ namespace RapidApi.Controllers
             return "No data available";
         }  //NBA apisi üzerinden veri çekme
         [HttpPost("UserApiGenerator")]
-        public IActionResult Generator()
+        public IActionResult Generator(string mailadress)
         {
             var userApiKey = generaTe.Key();
-
+            _mailActions.SendMail(mailadress, userApiKey);
             return Ok(userApiKey);
 
         } //api Key Generator

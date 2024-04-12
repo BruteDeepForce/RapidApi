@@ -26,16 +26,18 @@ namespace RapidApi.Controllers
         private readonly GenerateKey generaTe;
         private readonly Actions _actions;
         private readonly IMailSender _mailSender;
+        private readonly ITimeInsertDatabase _timeInsertDatabase;
 
         #endregion
         #region Ctor
-        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen, Actions actions, IMailSender mailActions)
+        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen, Actions actions, IMailSender mailActions, ITimeInsertDatabase timeInsertDatabase)
         {
              _context = context;
              _apiKeyValidation = apiKeyValidation;
              generaTe = gen;
             _actions = actions;
             _mailSender = mailActions;
+            _timeInsertDatabase = timeInsertDatabase;
         }
         #endregion
         [HttpGet("test")]
@@ -99,13 +101,7 @@ namespace RapidApi.Controllers
                 HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return null;
             }
-            var apikeyEntity= _context.apiKeys.FirstOrDefault(x => x.ApiKey == model.ApiKey);
-
-            apikeyEntity.ipAdress = HttpContext.Connection.RemoteIpAddress.ToString();
-
-            apikeyEntity.RequestTime = DateTime.UtcNow;
-
-            _context.SaveChanges();
+            _timeInsertDatabase.TimeInsert(model);
 
             var urls = new List<string>();
 
@@ -129,7 +125,7 @@ namespace RapidApi.Controllers
 
 
         [HttpPost("GetSingleUrl")]
-        public string SingleUrl([FromBody] RequestModel model, string title)
+        public string SingleUrl([FromBody] RequestModel model)
         {
             if (string.IsNullOrWhiteSpace(model.ApiKey))
             {
@@ -145,15 +141,10 @@ namespace RapidApi.Controllers
                 HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return null;
             }
-            var apikeyEntity = _context.apiKeys.FirstOrDefault(x => x.ApiKey == model.ApiKey);
+            _timeInsertDatabase.TimeInsert(model);
 
-            apikeyEntity.ipAdress = HttpContext.Connection.RemoteIpAddress.ToString();
+            var single = _actions.GetSinglePicture(model.title);
 
-            apikeyEntity.RequestTime = DateTime.UtcNow;
-
-            _context.SaveChanges();
-
-            var single = _actions.GetSinglePicture(title);
             if (single == null) { return "No Item"; }
 
             return single.url.ToString();

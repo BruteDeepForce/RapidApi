@@ -47,7 +47,7 @@ namespace RapidApi.Middlewares
                     {
                         await _next.Invoke(context);
                     }
-                    throw new Exception("15 dakika geçmedi");
+                    throw new Exception("Your account has sent new request. Try again 15 minutes later. Thank you..");
 
                 }
 

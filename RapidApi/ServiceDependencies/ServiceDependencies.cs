@@ -11,6 +11,9 @@ namespace RapidApi.ServiceDependencies
             services.AddTransient<GenerateKey>();
             services.AddTransient<Actions>();
             services.AddTransient<IMailSender,MailActions>();
+            services.AddTransient<ITimeInsertDatabase,TimeInsertDB>();
+            services.AddHttpContextAccessor();
+
 
             return services;
         }

@@ -4,6 +4,6 @@
     {
         public string ApiKey { get; set; }
 
-        //public string? title { get; set;}
+        public string? title { get; set; }
     }
 }

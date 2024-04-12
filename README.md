@@ -7,7 +7,7 @@ Web API Project. What does this API do?
 -Importing data from the database model
 
 
--To ensure the application of requests (Ip and Key) limited to 15 minutes
+-To ensure the application of requests (Ip and Key) limited to 15 minutes. Detection with middleware while the request is in the pipeline before it reaches the endpoint.
 
 
 -Generates API key for privacy and adds it to database synchronously (checks for the same key value)

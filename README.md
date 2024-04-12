@@ -11,7 +11,7 @@ Web API Project. What does this API do?
 Detection with middleware while the request is in the pipeline before it reaches the endpoint.
 
 
--Generates API key for privacy and adds it to database synchronously (checks for the same key value)
+-Generates the API key in SHA1 cryptography for confidentiality and adds it to the database simultaneously (checking for the same key value)
 
 
 -Sends an email to the user when the key is generated.

@@ -5,9 +5,11 @@ namespace RapidApi.Middlewares
     public class UseApiMiddleWare
     {
         private readonly RequestDelegate _next;
-        public UseApiMiddleWare(RequestDelegate next)
+        private readonly ILogger<UseApiMiddleWare> _logger;
+        public UseApiMiddleWare(RequestDelegate next, ILogger<UseApiMiddleWare> logger)
         {
             _next = next;
+            _logger = logger;
         }
         public async Task Invoke(HttpContext context)
         {
@@ -16,15 +18,16 @@ namespace RapidApi.Middlewares
 
             var req = context.Request;       
 
-            //Console.WriteLine(startTime.ToString());
-
             await _next.Invoke(context);
 
             var endTime = DateTime.UtcNow;
 
             var sum = endTime-startTime;
 
-            Console.WriteLine($"{pathClick} Endpointinde Request - Response arası Süre : {sum.TotalMilliseconds} MiliSecond");
+            _logger.LogInformation($"{pathClick} Endpointinde Request - Response arası Süre : {sum.TotalMilliseconds} MiliSecond");
+
+            _logger.LogInformation($"{pathClick}");
+
         }
 
     }
@@ -33,6 +36,11 @@ namespace RapidApi.Middlewares
         public static IApplicationBuilder UseApiMiddleware(this IApplicationBuilder builder) 
         {
             return builder.UseMiddleware<UseApiMiddleWare>();
+        }
+
+        public static IApplicationBuilder UseCheckRemoteMiddleware(this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<CheckRemoteIpAdressMiddleware>();
         }
 
     }

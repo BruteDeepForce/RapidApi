@@ -25,16 +25,17 @@ namespace RapidApi.Controllers
         private readonly IApiKeyValidation _apiKeyValidation;
         private readonly GenerateKey generaTe;
         private readonly Actions _actions;
-        private readonly MailActions _mailActions;
+        private readonly IMailSender _mailSender;
+
         #endregion
         #region Ctor
-        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen, Actions actions, MailActions mailActions)
+        public RapidController(Context context, IApiKeyValidation apiKeyValidation, GenerateKey gen, Actions actions, IMailSender mailActions)
         {
              _context = context;
              _apiKeyValidation = apiKeyValidation;
              generaTe = gen;
             _actions = actions;
-            _mailActions = mailActions;
+            _mailSender = mailActions;
         }
         #endregion
         [HttpGet("test")]
@@ -70,14 +71,18 @@ namespace RapidApi.Controllers
             }
             return "No data available";
         }  //NBA apisi üzerinden veri çekme
+
+
         [HttpPost("UserApiGenerator")]
         public IActionResult Generator(string mailadress)
         {
             var userApiKey = generaTe.Key();
-            _mailActions.SendMail(mailadress, userApiKey);
+            _mailSender.SendMail(mailadress, userApiKey);
             return Ok(userApiKey);
 
         } //api Key Generator
+
+
         [HttpGet("GetPicture")]
         public IEnumerable<string> PictureUrls([FromBody] RequestModel model)
         {            
@@ -88,12 +93,19 @@ namespace RapidApi.Controllers
                 return null;
             }
             
-            bool isValid = _apiKeyValidation.IsValidApiKey(model.ApiKey);
+            bool isValid = _apiKeyValidation.IsExistApiKey(model.ApiKey);
 
             if (!isValid) {
                 HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 return null;
             }
+            var apikeyEntity= _context.apiKeys.FirstOrDefault(x => x.ApiKey == model.ApiKey);
+
+            apikeyEntity.ipAdress = HttpContext.Connection.RemoteIpAddress.ToString();
+
+            apikeyEntity.RequestTime = DateTime.UtcNow;
+
+            _context.SaveChanges();
 
             var urls = new List<string>();
 
@@ -114,9 +126,33 @@ namespace RapidApi.Controllers
 
            //  return urls.Any() ? urls : new List<string>() { "no item" };   kısa yol
         }
-        [HttpGet("GetSingleUrl")]
-        public string SingleUrl(string title)
+
+
+        [HttpPost("GetSingleUrl")]
+        public string SingleUrl([FromBody] RequestModel model, string title)
         {
+            if (string.IsNullOrWhiteSpace(model.ApiKey))
+            {
+
+                HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return null;
+            }
+
+            bool isValid = _apiKeyValidation.IsExistApiKey(model.ApiKey);
+
+            if (!isValid)
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                return null;
+            }
+            var apikeyEntity = _context.apiKeys.FirstOrDefault(x => x.ApiKey == model.ApiKey);
+
+            apikeyEntity.ipAdress = HttpContext.Connection.RemoteIpAddress.ToString();
+
+            apikeyEntity.RequestTime = DateTime.UtcNow;
+
+            _context.SaveChanges();
+
             var single = _actions.GetSinglePicture(title);
             if (single == null) { return "No Item"; }
 
@@ -128,6 +164,8 @@ namespace RapidApi.Controllers
             //return control != null ? control.url.ToString() : "No Item";
             #endregion  //iptal edilen taraf.
         }
+
+
         [HttpDelete("DeletePicture")]
         public IActionResult Delete(int id) 
         {
@@ -136,6 +174,8 @@ namespace RapidApi.Controllers
             if (control == 0) { return BadRequest(); }
             else { return Ok(); }   
         }
+
+
         [HttpPost("AddItem")]
         public IActionResult addItem(Picture model)
         {
@@ -143,12 +183,20 @@ namespace RapidApi.Controllers
             if (aResp == 1) { return Ok(); }
             return BadRequest();
         }
+
+
         [HttpPut("UpdateItem")]
         public IActionResult updateItem(Picture model) 
         {
             var aResp = _actions.Put(model);
             if(aResp == 1) { return Ok(); };
             return BadRequest();
+        }
+
+        [HttpPost("gettest")]
+        public IActionResult gettest([FromBody] string data) 
+        {
+            return Ok();
         }
     }
 

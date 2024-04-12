@@ -3,7 +3,7 @@ using System.Net;
 
 namespace RapidApi.Model
 {
-    public class MailActions
+    public class MailActions:IMailSender
     {
 
         public void SendMail(string mailAdress, string Key)

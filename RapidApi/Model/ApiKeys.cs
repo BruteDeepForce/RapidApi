@@ -8,6 +8,10 @@ namespace RapidApi.Model
     {
         [Key]
         public string ApiKey { get; set; }
+
+        public string? ipAdress { get; set; }
+
+        public DateTime? RequestTime { get; set; }
     }
 
     public class query

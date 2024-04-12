@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RapidApi.Authentication;
 using RapidApi.Middlewares;
 using RapidApi.Model;
+using RapidApi.ServiceDependencies;
 using System;
 
 namespace RapidApi
@@ -23,14 +24,15 @@ namespace RapidApi
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
-            builder.Services.AddTransient<GenerateKey>(); 
-            builder.Services.AddTransient<Actions>();
-            builder.Services.AddTransient<MailActions>();
-            
+            //builder.Services.AddTransient<IApiKeyValidation, ApiKeyValidation>();
+            //builder.Services.AddTransient<GenerateKey>(); 
+            //builder.Services.AddTransient<Actions>();
+            //builder.Services.AddTransient<MailActions>();
+
+            builder.Services.AddServiceDependencies();
+
             builder.Services.AddDbContext<Context>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("RapidDatabase")));
-
 
             var app = builder.Build();
 
@@ -40,8 +42,10 @@ namespace RapidApi
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCheckRemoteMiddleware();
+            ////app.UseMiddleware<CheckRemoteIpAdressMiddleware>();
             app.UseApiMiddleware();
+
 
             app.UseHttpsRedirection();
 

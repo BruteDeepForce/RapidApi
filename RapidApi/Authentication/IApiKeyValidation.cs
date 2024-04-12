@@ -2,6 +2,6 @@
 {
     public interface IApiKeyValidation
     {
-        bool IsValidApiKey(string userApiKey);
+        bool IsExistApiKey(string userApiKey);
     }
 }

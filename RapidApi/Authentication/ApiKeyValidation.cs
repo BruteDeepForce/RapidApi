@@ -13,7 +13,7 @@ namespace RapidApi.Authentication
             _configuration = configuration;
             context = _c;
         }
-        public bool IsValidApiKey(string userApiKey)
+        public bool IsExistApiKey(string userApiKey)
         {
             if(string.IsNullOrWhiteSpace(userApiKey))
             {

@@ -13,7 +13,7 @@ namespace RapidApi.Model
         {
              _context = context;
         }
-        public string Key()
+        public string Key(string mailAdress)
         { 
             char[] characters = new char[10];
 
@@ -51,14 +51,14 @@ namespace RapidApi.Model
 
             foreach (var key in _context.apiKeys) //Databasede bu api key var mı _??
             {
-                if(key.ApiKey == encode) { Key(); }
+                if(key.ApiKey == encode) { Key(mailAdress); }
 
             }
-            var api = new ApiKeys { ApiKey = encode };  
+
+            var api = new ApiKeys { ApiKey = encode, MailAdress = mailAdress };
 
             _context.apiKeys.Add(api);
             _context.SaveChanges();
-
 
             return new string(encode);
 

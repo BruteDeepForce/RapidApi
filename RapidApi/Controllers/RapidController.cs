@@ -78,9 +78,19 @@ namespace RapidApi.Controllers
         [HttpPost("UserApiGenerator")]
         public IActionResult Generator(string mailadress)
         {
-            var userApiKey = generaTe.Key();
-            _mailSender.SendMail(mailadress, userApiKey);
-            return Ok(userApiKey);
+
+            if (mailadress != null)
+            {
+                
+                if (!_context.apiKeys.Where(x => x.MailAdress == mailadress).Any())
+                {
+                    var userApiKey = generaTe.Key(mailadress); //Mail adres db save.
+                    _mailSender.SendMail(mailadress, userApiKey); 
+                    return Ok(userApiKey);
+                }
+                return BadRequest("This E-mail Adress already exist");
+            }
+            return BadRequest();
 
         } //api Key Generator
 
@@ -122,7 +132,6 @@ namespace RapidApi.Controllers
 
            //  return urls.Any() ? urls : new List<string>() { "no item" };   kısa yol
         }
-
 
         [HttpPost("GetSingleUrl")]
         public string SingleUrl([FromBody] RequestModel model)

@@ -12,6 +12,8 @@ namespace RapidApi.Model
         public string? ipAdress { get; set; }
 
         public DateTime? RequestTime { get; set; }
+
+        public string? MailAdress { get; set; }
     }
 
     public class query

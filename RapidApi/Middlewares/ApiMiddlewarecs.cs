@@ -27,9 +27,7 @@ namespace RapidApi.Middlewares
             _logger.LogInformation($"{pathClick} Endpointinde Request - Response arası Süre : {sum.TotalMilliseconds} MiliSecond");
 
             _logger.LogInformation($"{pathClick}");
-
         }
-
     }
     public static class ApiMiddlewareExtension
     {

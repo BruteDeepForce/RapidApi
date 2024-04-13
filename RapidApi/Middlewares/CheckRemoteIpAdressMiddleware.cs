@@ -50,10 +50,8 @@ namespace RapidApi.Middlewares
                     throw new Exception("Your account has sent new request. Try again 15 minutes later. Thank you..");
 
                 }
-
             }
-            
-            await _next.Invoke(context);
+        await _next.Invoke(context);
         }
 
     }
